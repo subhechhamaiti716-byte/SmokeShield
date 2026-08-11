@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+.expo/
+dist/
+web-build/
+
+# Python environment & cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+env/
+venv/
+ENV/
+
+# Databases & local logs
+*.db
+*.log
+backend/smokeshield.db
+backend/test_smokeshield.db
+
+# Secrets & configurations
+.env
+.env.*
+!.env.example
+*.local
+
+# System/IDE files
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
