@@ -13,7 +13,7 @@ import {
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { Spacing } from '@/constants/theme';
-import { apiRequest, saveToken } from '../utils/api';
+import { apiRequest, saveToken, getApiUrl, setApiUrl } from '../utils/api';
 
 interface AuthScreenProps {
   onAuthSuccess: (token: string, user: any) => void;
@@ -24,8 +24,14 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [apiUrl, setApiUrlState] = useState(getApiUrl());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleApiUrlChange = async (url: string) => {
+    setApiUrlState(url);
+    await setApiUrl(url);
+  };
 
   const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
@@ -152,6 +158,22 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
+
+            <View style={styles.divider} />
+
+            <View style={styles.inputGroup}>
+              <View style={styles.row}>
+                <ThemedText type="small" style={styles.inputLabel}>Backend Server URL</ThemedText>
+                <ThemedText type="small" style={styles.ipBadge}>Dev IP: 192.168.1.6</ThemedText>
+              </View>
+              <TextInput
+                style={[styles.input, styles.apiInput]}
+                value={apiUrl}
+                onChangeText={handleApiUrlChange}
                 autoCapitalize="none"
                 autoCorrect={false}
               />
@@ -314,5 +336,29 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#14b8a6',
     textAlign: 'center',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    marginVertical: Spacing.three,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  ipBadge: {
+    color: '#14b8a6',
+    backgroundColor: 'rgba(20, 184, 166, 0.1)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  apiInput: {
+    fontSize: 13,
+    color: '#94a3b8',
+    borderColor: 'rgba(20, 184, 166, 0.15)',
   },
 });

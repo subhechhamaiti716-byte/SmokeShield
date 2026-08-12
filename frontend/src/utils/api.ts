@@ -1,10 +1,9 @@
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
-// Helper to determine default API base URL
 const getDefaultApiUrl = () => {
-  if (Platform.OS === 'android') {
-    return 'http://10.0.2.2:8000/api/v1';
+  if (Platform.OS === 'android' || Platform.OS === 'ios') {
+    return 'http://192.168.1.6:8000/api/v1';
   }
   return 'http://127.0.0.1:8000/api/v1';
 };
