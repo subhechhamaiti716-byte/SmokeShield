@@ -154,6 +154,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
                 onChangeText={setPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
+              />
             </View>
 
             <TouchableOpacity
