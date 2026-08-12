@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 const getDefaultApiUrl = () => {
   if (Platform.OS === 'android' || Platform.OS === 'ios') {
-    return 'http://192.168.1.6:8000/api/v1';
+    return 'https://smokeshield.onrender.com/api/v1';
   }
   return 'http://127.0.0.1:8000/api/v1';
 };
