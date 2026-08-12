@@ -11,7 +11,7 @@ import {
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { Spacing } from '@/constants/theme';
-import { apiRequest, getApiUrl, setApiUrl, removeToken } from '../utils/api';
+import { apiRequest, removeToken } from '../utils/api';
 
 interface SettingsTabProps {
   onLogout: () => void;
@@ -20,8 +20,6 @@ interface SettingsTabProps {
 export function SettingsTab({ onLogout }: SettingsTabProps) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [customApiUrl, setCustomApiUrl] = useState(getApiUrl());
-  const [savingUrl, setSavingUrl] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
 
   const fetchProfile = async () => {
@@ -38,21 +36,6 @@ export function SettingsTab({ onLogout }: SettingsTabProps) {
   useEffect(() => {
     fetchProfile();
   }, []);
-
-  const handleSaveApiUrl = async () => {
-    if (!customApiUrl.trim()) return;
-    setSavingUrl(true);
-    setSuccess(null);
-    try {
-      await setApiUrl(customApiUrl.trim());
-      setSuccess('API Connection URL updated successfully!');
-      setTimeout(() => setSuccess(null), 3000);
-    } catch (e) {
-      Alert.alert('Error', 'Failed to save URL.');
-    } finally {
-      setSavingUrl(false);
-    }
-  };
 
   const handleLogout = async () => {
     await removeToken();
@@ -71,7 +54,7 @@ export function SettingsTab({ onLogout }: SettingsTabProps) {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <ThemedText type="subtitle" style={styles.title}>Settings</ThemedText>
-        <ThemedText style={styles.subtitle}>Configure app preferences & connections</ThemedText>
+        <ThemedText style={styles.subtitle}>Configure app preferences</ThemedText>
       </View>
 
       {success && (
@@ -79,32 +62,6 @@ export function SettingsTab({ onLogout }: SettingsTabProps) {
           <ThemedText style={styles.successText}>{success}</ThemedText>
         </View>
       )}
-
-      {/* Network Configuration */}
-      <ThemedView type="backgroundElement" style={styles.card}>
-        <ThemedText type="smallBold" style={styles.cardTitle}>🌐 BACKEND CONNECTION</ThemedText>
-        <ThemedText type="small" style={styles.cardDesc}>
-          Set the server endpoint. For local machine emulators, use default. For physical device testing, use your host's local network IP.
-        </ThemedText>
-        
-        <TextInput
-          style={styles.input}
-          value={customApiUrl}
-          onChangeText={setCustomApiUrl}
-          placeholder="http://192.168.1.100:8000/api/v1"
-          placeholderTextColor="#64748b"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-
-        <TouchableOpacity
-          style={styles.saveBtn}
-          onPress={handleSaveApiUrl}
-          disabled={savingUrl}
-        >
-          {savingUrl ? <ActivityIndicator color="#fff" /> : <ThemedText style={styles.saveBtnText}>Save Connection</ThemedText>}
-        </TouchableOpacity>
-      </ThemedView>
 
       {/* Smoking Profile Summary */}
       {profile && (
